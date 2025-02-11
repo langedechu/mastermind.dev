@@ -1,0 +1,3 @@
+# Mastermind.dev
+
+Discord bot.
