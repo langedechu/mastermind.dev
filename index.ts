@@ -2,19 +2,17 @@ import {
   Client,
   Colors,
   CommandInteraction,
-  Embed,
   EmbedBuilder,
   Events,
   GatewayIntentBits,
-  MessageFlags,
+  SlashCommandBuilder,
 } from "discord.js";
 import fs from "fs";
 
-type fullCommandDescriptor = {
-  name: string;
-  description: string;
-  run: (_interaction: CommandInteraction) => void;
-};
+interface fullCommandDescriptor {
+  infos: SlashCommandBuilder;
+  run: (_interaction: CommandInteraction) => Promise<void>;
+}
 
 const commands: fullCommandDescriptor[] = [];
 
@@ -39,7 +37,7 @@ client.on(Events.InteractionCreate, async (_interaction) => {
   if (!_interaction.isChatInputCommand()) return;
 
   const command = commands
-    .filter((_command) => _command.name == _interaction.commandName)
+    .filter((_command) => _command.infos.name == _interaction.commandName)
     .at(0);
 
   if (!command) {
@@ -58,10 +56,11 @@ client.on(Events.InteractionCreate, async (_interaction) => {
         }),
       ],
     });
+
     return;
   }
 
-  command.run(_interaction);
+  await command.run(_interaction);
 });
 
 client.login(process.env.TOKEN);
