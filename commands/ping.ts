@@ -1,9 +1,15 @@
-import { Colors, EmbedBuilder, type CommandInteraction } from "discord.js";
+import {
+  Colors,
+  EmbedBuilder,
+  SlashCommandBuilder,
+  type CommandInteraction,
+} from "discord.js";
 
 export default {
-  name: "ping",
-  description: "Replies with 'Pong!'.",
-  run(_interaction: CommandInteraction) {
+  infos: new SlashCommandBuilder()
+    .setName("ping")
+    .setDescription("Shows response time in milliseconds."),
+  async run(_interaction: CommandInteraction) {
     _interaction.reply({
       embeds: [
         new EmbedBuilder({
@@ -15,5 +21,7 @@ export default {
         }),
       ],
     });
+
+    return;
   },
 };
