@@ -1,4 +1,10 @@
-import { FormattingPatterns, REST, Routes } from "discord.js";
+import {
+  FormattingPatterns,
+  REST,
+  Routes,
+  SlashCommandBuilder,
+  type SlashCommandOptionsOnlyBuilder,
+} from "discord.js";
 import fs from "fs";
 import dotenv from "dotenv";
 
@@ -6,27 +12,17 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// ? Descriptor type for commands
-
-type commandDescriptor = {
-  name: string;
-  description: string;
-};
-
 // ? Handle command files
 
-let commands: commandDescriptor[] = [];
+let commands: SlashCommandBuilder[] = [];
 
 async function loaderHandleFileNames(_fileNames: string[]) {
   return new Promise((_resolve) => {
     _fileNames.forEach((_fileName, _index) => {
-      const command: commandDescriptor =
-        require(`./commands/${_fileName}`).default;
+      const commandInfos: SlashCommandBuilder =
+        require(`./commands/${_fileName}`).default.infos;
 
-      commands.push({
-        name: command.name,
-        description: command.description,
-      });
+      commands.push(commandInfos);
 
       if (_index == _fileNames.length - 1) {
         _resolve(null);
@@ -37,7 +33,7 @@ async function loaderHandleFileNames(_fileNames: string[]) {
 
 // Register command descriptors
 
-async function registerCommands(_commands: commandDescriptor[]) {
+async function registerCommands(_commands: SlashCommandBuilder[]) {
   const rest = new REST({ version: "10" }).setToken(
     process.env.TOKEN as string
   );
