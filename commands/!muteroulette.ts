@@ -1,6 +1,7 @@
 import {
   Colors,
   EmbedBuilder,
+  GuildMember,
   PermissionFlagsBits,
   SlashCommandBuilder,
   type CommandInteraction,
@@ -31,16 +32,9 @@ export default {
       return;
     }
 
-    const members = await guild.members.fetch();
-    const randomMember = members.random();
-
-    await randomMember?.voice.setMute(true);
-    randomMember?.permissions.remove(PermissionFlagsBits.SendMessages);
-
-    setTimeout(() => {
-      randomMember?.voice.setMute(false);
-      randomMember?.permissions.add(PermissionFlagsBits.SendMessages);
-    }, 1000 * 60 * 60 * 2);
+    const randomMember = guild.members.cache.at(
+      Math.floor(Math.random() * guild.members.cache.size)
+    ) as GuildMember;
 
     _interaction.reply({
       embeds: [
@@ -55,6 +49,12 @@ export default {
         }),
       ],
     });
+
+    randomMember?.permissions.remove(PermissionFlagsBits.SendMessages);
+
+    setTimeout(() => {
+      randomMember?.permissions.add(PermissionFlagsBits.SendMessages);
+    }, 1000 * 60 * 60 * 2);
 
     return;
   },
