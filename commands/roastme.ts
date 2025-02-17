@@ -9,6 +9,13 @@ import {
 import { OpenAI } from "openai";
 import mysql from "mysql";
 
+// ? Can't this function be a problem if the user doesn't agree to the terms of service of OpenAI?
+// ? Also, the user's data is being stored in the database, which is a privacy issue.
+// ! We should ask the user for their consent before using their data and restrict the data storage to the minimum required.
+// ! We should also provide a way for the user to delete their data.
+// ! For the OpenAI API, we should provide a way for the user to agree to the terms of service before using the API.
+// ! And if we don't have the user's consent, we do not allow the use of the command and inform the user about the consent requirement.
+
 const ai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const pool = mysql.createPool({
