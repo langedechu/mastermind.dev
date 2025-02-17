@@ -10,9 +10,13 @@
   },
   "dependencies": {
     "@discordjs/voice": "^0.18.0",
+    "@types/mysql": "^2.15.26",
     "bufferutil": "^4.0.9",
     "discord.js": "^14.18.0",
     "dotenv": "^16.4.7",
+    "mariadb": "^3.4.0",
+    "mysql": "^2.18.1",
+    "openai": "^4.85.1",
     "zlib-sync": "^0.1.9"
   }
 }
